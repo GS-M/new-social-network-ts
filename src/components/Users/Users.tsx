@@ -7,10 +7,10 @@ type propsType = {
     totalUsersCount: number
     pageSize: number
     curentPage: number
-    onPageChanged: (pageNumber: number) => void
     users: Array<userType>
     folowingInProgress: Array<number>
 
+    onPageChanged: (pageNumber: number) => void
     followTC: (userId: number) => void   ///
     unfollowTC: (userId: number) => void  ///
 }

@@ -5,8 +5,8 @@ import DialogItem from './DialogItem/DialogsItem';
 import cs from './Dialogs.module.css'
 import Message from './Message/Message';
 
-const maxLength100 = maxLengthCreator(20)
 
+const maxLength100 = maxLengthCreator(20)
 const DialogsForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
@@ -21,8 +21,8 @@ const DialogsReduxForm = reduxForm({ form: 'addDialogsMassage' })(DialogsForm)
 
 
 const Dialogs = (props) => {
-    let dialogsElements = props.dialogsPage.dialogsData.map((humans) => <DialogItem id={humans.id} key={humans.id} name={humans.name} />)
-    let messageElements = props.dialogsPage.messagesData.map((dialog) => <Message id={dialog.id} key={dialog.id} text={dialog.message} />)
+    let dialogsElements = props.dialogsData.map((humans) => <DialogItem id={humans.id} key={humans.id} name={humans.name} />)
+    let messageElements = props.messagesData.map((dialog) => <Message id={dialog.id} key={dialog.id} text={dialog.message} />)
 
     let addNewMessage = (values) => {
         props.sendMessageAC(values.newMessage);

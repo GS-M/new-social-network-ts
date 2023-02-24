@@ -35,3 +35,13 @@ export type userType = {
     photos: photosType
     followed: boolean
 } /*Отдельно взятый пользователь */
+
+
+export type dialogsDataType = {
+    id: number,
+    name: string
+}
+export type messagesDataType = {
+    id: number,
+    message: string
+}
