@@ -1,5 +1,5 @@
 import { usersAPI } from "../api/api";
-import { photosType, userType } from "../common-types/common-types";
+import { userType } from "../common-types/common-types";
 import { updateObjectInArrey } from "../utils/validators/function-helpers";
 
 const FOLLOW = 'FOLLOW';

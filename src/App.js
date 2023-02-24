@@ -7,7 +7,6 @@ import { connect, Provider } from 'react-redux';
 //import {getAuthUserDataTC} from "./redux/authReduser"
 import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
-import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import Login from './components/Login/Login';
 import { Preloader } from './components/common/Preloader/Preloader';
@@ -50,7 +49,6 @@ class App extends React.Component {
                 // dialogsPage={props.state.dialogsPage} dispatch={props.dispatch} 
               } />
               <Route path='/news' element={<News />} />
-              <Route path='/music' element={<Music />} />
               <Route path='/settings' element={<Settings />} />
               <Route path='/users' element={<UsersContainer />} />
               <Route path='/login' element={<Login />} />

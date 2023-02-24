@@ -11,8 +11,8 @@ type propsType = {
     users: Array<userType>
     folowingInProgress: Array<number>
 
-    followTC: () => void   ///
-    unfollowTC: () => void  ///
+    followTC: (userId: number) => void   ///
+    unfollowTC: (userId: number) => void  ///
 }
 
 export const Users: React.FC<propsType> = (props) => {

@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import { getUsersThunkCreator, followTC, unfollowTC } from "../../redux/usersReduser"
-
 import React from "react";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader/Preloader";
@@ -10,9 +9,29 @@ import {
     getCurentPage, getFolowingInProgress, getIsLoading, getPageSize,
     getTotalUsersCount, getUsersSelector
 } from "../../utils/resecelectors/users-selectors";
+import { userType } from "../../common-types/common-types";
+import { globalStateType } from "../../redux/redux-store";
 
-export class UsersAPIComponent extends React.Component {
+type mapStatePropsType = {
+    curentPage: number
+    pageSize: number
+    users: Array<userType>
+    totalUsersCount: number
+    isLoading: boolean
+    folowingInProgress: Array<number>
+}
+type mapDispatchPropsType = {
+    getUsersThunkCreator: (curentPage: number, pageSize: number) => void
+    followTC: (userId: number) => void
+    unfollowTC: (userId: number) => void
+}
+type ownPropsType = {
+    // Прямые props из компоненты выше
+}
 
+type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType
+
+export class UsersAPIComponent extends React.Component<propsType> {
     componentDidMount() {
         const { curentPage, pageSize } = this.props //Деструкторизация внутри метода
         if (this.props.users.length === 0) {
@@ -28,7 +47,7 @@ export class UsersAPIComponent extends React.Component {
     }
     // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.curentPage}&count=${this.props.pageSize}`).then(response =>
 
-    onPageChanged = (pageNumber) => {
+    onPageChanged = (pageNumber: number) => {
         this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
 
         // this.props.setCurentPageAC(pageNumber);
@@ -60,7 +79,7 @@ export class UsersAPIComponent extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: globalStateType): mapStatePropsType => {
     return {
         //users: getUsers(state),
         users: getUsersSelector(state),
@@ -71,9 +90,12 @@ let mapStateToProps = (state) => {
         folowingInProgress: getFolowingInProgress(state)
     }
 }
-
-export let UsersContainer = compose(connect(mapStateToProps, { getUsersThunkCreator, followTC, unfollowTC })
+//<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState
+export let UsersContainer = compose(
+    connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, globalStateType>
+        (mapStateToProps, { getUsersThunkCreator, followTC, unfollowTC })
 )(UsersAPIComponent)
+//<propsType>
     //withAuthRedirectHOC
 // export let UsersContainer = connect(mapStateToProps, {
 //     // followUser: followAC, По такому принципу
@@ -84,10 +106,5 @@ export let UsersContainer = compose(connect(mapStateToProps, { getUsersThunkCrea
 // let mapDispatchToProps = (dispatch) => {
 //     return {
 //         followUser: (userId) => { dispatch(followAC(userId)) },
-//         unfollowUser: (userId) => { dispatch(unfollowAC(userId)) },
-//         setUsers: (users) => { dispatch(setUsersAC(users)) },
-//         setCurentPage: (pageNumber) => { dispatch(setCurentPageAC(pageNumber)) },
-//         setTotalUsersCount: (totalCount) => { dispatch(setTotalUsersCountAC(totalCount)) },
-//         toggleIsLoading: (isLoading) => { dispatch(toggleIsLoadingAC(isLoading)) },
 //     }
 // }
