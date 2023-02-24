@@ -19,13 +19,17 @@ let reducers = combineReducers({
     form: formReducer
 });
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;  //для расширения Redux DevTools
+type reducersType = typeof reducers
+export type globalStateType = ReturnType<reducersType>  // Определяет тип, возврощаемый из типа
+
+// @ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose  //для расширения Redux DevTools
 
 export const store = legacy_createStore(reducers, composeEnhancers(
     applyMiddleware(thunkMiddleware)
 ));
 
 // export let store = legacy_createStore(reducers, applyMiddleware(thunkMiddleware));
-
+// @ts-ignore
 window.__store__ = store
 

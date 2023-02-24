@@ -1,9 +1,19 @@
 import { useState } from 'react';
 import cs from './Paginator.module.css'
 
-export const Paginator = ({ totalItemsCount, pageSize, curentPage, onPageChanged, portionSize = 7 }) => {
+type propsType = {
+    totalItemsCount: number
+    pageSize: number
+    curentPage: number
+    onPageChanged: (pageNumber: number) => void //функция которая ничего не возвращает
+    portionSize?: number
+}
+
+export const Paginator: React.FC<propsType> = ({
+    totalItemsCount, pageSize, curentPage,
+    onPageChanged, portionSize = 7 }) => {
     let pagesCount = Math.ceil(totalItemsCount / pageSize);
-    let pages = [];
+    let pages: Array<number> = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
     }

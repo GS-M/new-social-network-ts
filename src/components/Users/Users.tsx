@@ -1,9 +1,21 @@
+import { userType } from '../../common-types/common-types';
 import { Paginator } from '../common/Paginator/Paginator';
 import { User } from './User';
 //import { usersAPI } from '../../api/api';
 
+type propsType = {
+    totalUsersCount: number
+    pageSize: number
+    curentPage: number
+    onPageChanged: (pageNumber: number) => void
+    users: Array<userType>
+    folowingInProgress: Array<number>
 
-export const Users = (props) => {
+    followTC: () => void   ///
+    unfollowTC: () => void  ///
+}
+
+export const Users: React.FC<propsType> = (props) => {
     return (
         <div>
             <Paginator totalItemsCount={props.totalUsersCount}
