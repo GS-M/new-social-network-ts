@@ -1,0 +1,16 @@
+.dialog {
+    padding: 15px 0 15px 0;
+}
+
+.dialog a {
+    text-decoration: none;
+    color: white;
+
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    vertical-align: middle;
+}
