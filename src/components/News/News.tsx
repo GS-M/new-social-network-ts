@@ -1,5 +1,7 @@
+type propsType = {
 
-const News = () => {
+}
+const News: React.FC<propsType> = () => {
     return (
         <div>
             News

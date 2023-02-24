@@ -1,5 +1,7 @@
+type propsType = {
 
-const Settings = () => {
+}
+const Settings: React.FC<propsType> = () => {
     return (
         <div>
             Settings
