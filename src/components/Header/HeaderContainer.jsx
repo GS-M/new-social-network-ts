@@ -7,7 +7,7 @@ import { getIsAuthSR } from '../../utils/resecelectors/profile-selectors';
 //
 const HeaderContainer = (props) => {
     return (
-        <Header isAuth={props.isAuth} login={props.login} />
+        <Header isAuth={props.isAuth} login={props.login} logoutTC={props.logoutTC} />
     )
 }
 const mapStateToProps = (state) => {
