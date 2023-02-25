@@ -96,8 +96,8 @@ export const loginTC = (email: string, password: string, rememberMe: boolean, ca
 }
 export const logoutTC = (): thunkType => {
     return async (dispatch) => {
-        let responce = await authAPI.logout()
-        if (responce.data.resultCode === resultCodeEnum.Success) {
+        let data = await authAPI.logout()
+        if (data.resultCode === resultCodeEnum.Success) {
             dispatch(setAuthUserDataAC(null, null, null, false))
         }
     }
@@ -105,6 +105,7 @@ export const logoutTC = (): thunkType => {
 export const getCapchaUrlTC = (): thunkType => {
     return async (dispatch) => {
         const responce = await secirityAPI.getCaptchaUrl()
+        debugger
         const capchaURL = responce.data.url
         dispatch(getCaptchaUrlAC(capchaURL))
     }

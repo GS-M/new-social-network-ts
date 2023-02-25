@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { usersAPI } from "../api/api";
+import { resultCodeEnum, usersAPI } from "../api/api";
 import { userType } from "../common-types/common-types";
 import { updateObjectInArrey } from "../utils/validators/function-helpers";
 import { globalStateType } from "./redux-store";
@@ -139,7 +139,6 @@ export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
         dispatch(toggleIsLoadingAC(false))
         dispatch(setUsersAC(data.items))
         dispatch(setTotalUsersCountAC(data.totalCount))
-
     }
 }
 
@@ -147,7 +146,8 @@ export const followTC = (userId: number): thunkType => {
     return async (dispatch) => {
         dispatch(toggleIsFolowingProgressAC(true, userId))
         let data = await usersAPI.followUser(userId)
-        if (data.resultCode === 0) {
+        //debugger
+        if (data.resultCode === resultCodeEnum.Success) {
             dispatch(followAC(userId))
         }
         dispatch(toggleIsFolowingProgressAC(false, userId))
@@ -158,7 +158,7 @@ export const unfollowTC = (userId: number): thunkType => {
     return async (dispatch) => {
         dispatch(toggleIsFolowingProgressAC(true, userId))
         let data = await usersAPI.unfollowUser(userId)
-        if (data.resultCode === 0) {
+        if (data.resultCode === resultCodeEnum.Success) {
             dispatch(unfollowAC(userId))
         }
         dispatch(toggleIsFolowingProgressAC(false, userId))
