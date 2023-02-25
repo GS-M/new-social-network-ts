@@ -1,28 +1,28 @@
 import { createSelector } from "reselect"
-import { globalStateType } from "../../redux/redux-store"
+import { GlobalStateType } from "../../redux/redux-store"
 
 
-export const getUsers = (state: globalStateType) => {
+export const getUsers = (state: GlobalStateType) => {
     return state.usersPage.users
 }
 export const getUsersSelector = createSelector(getUsers, (users) => {
     return users.filter(u => true)
 }) // усложненный пример
 
-export const getPageSize = (state: globalStateType) => {
+export const getPageSize = (state: GlobalStateType) => {
     return state.usersPage.pageSize
 }
 
-export const getTotalUsersCount = (state: globalStateType) => {
+export const getTotalUsersCount = (state: GlobalStateType) => {
     return state.usersPage.totalUsersCount
 }
-export const getCurentPage = (state: globalStateType) => {
+export const getCurentPage = (state: GlobalStateType) => {
     return state.usersPage.curentPage
 }
-export const getIsLoading = (state: globalStateType) => {
+export const getIsLoading = (state: GlobalStateType) => {
     return state.usersPage.isLoading
 }
-export const getFolowingInProgress = (state: globalStateType) => {
+export const getFolowingInProgress = (state: GlobalStateType) => {
     return state.usersPage.folowingInProgress
 }
 

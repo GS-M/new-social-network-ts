@@ -18,19 +18,18 @@ let reducers = combineReducers({
     form: formReducer
 });
 
-type reducersType = typeof reducers
-export type globalStateType = ReturnType<reducersType>  // Определяет тип, возврощаемый из типа
-
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose  //для расширения Redux DevTools
-
 export const store = legacy_createStore(reducers, composeEnhancers(
     applyMiddleware(thunkMiddleware)
 ));
 
+type ReducersType = typeof reducers
+export type GlobalStateType = ReturnType<ReducersType>  // Определяет тип, возврощаемый из типа
 // export let store = legacy_createStore(reducers, applyMiddleware(thunkMiddleware));
-// @ts-ignore
-window.__store__ = store
 
 type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
 export type InferActionsType<T extends { [key: string]: (...args: any) => any }> = ReturnType<PropertiesTypes<T>>
+
+// @ts-ignore
+window.__store__ = store

@@ -1,9 +1,9 @@
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { resultCodeEnum, usersAPI } from "../api/api";
-import { userType } from "../common-types/common-types";
+import { ResultCodeEnum, usersAPI } from "../api/api";
+import { UserType } from "../common-types/common-types";
 import { updateObjectInArrey } from "../utils/validators/function-helpers";
-import { globalStateType, InferActionsType } from "./redux-store";
+import { GlobalStateType, InferActionsType } from "./redux-store";
 
 const FOLLOW = 'user/FOLLOW';
 const UNFOLLOW = 'user/UNFOLLOW';
@@ -21,17 +21,17 @@ const TOGGLE_IS_FOLOWING_PROGRESS = 'user/TOGGLE_IS_FOLOWING_PROGRESS';
 //     isLoading: boolean,
 //     folowingInProgress: Array<number>
 // }
-export type initialStateType = typeof initialState
+export type InitialStateType = typeof initialState
 
 let initialState = {
-    users: [] as Array<userType>,
+    users: [] as Array<UserType>,
     pageSize: 8,
     totalUsersCount: 0,
     curentPage: 1,
     isLoading: false,
     folowingInProgress: [] as Array<number> //Массив id пользователей
 }
-export const usersReducer = (state = initialState, action: actionsTypes): initialStateType => {
+export const usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 
     switch (action.type) {
         case FOLLOW:
@@ -77,11 +77,11 @@ export const usersReducer = (state = initialState, action: actionsTypes): initia
 }
 
 
-type actionsTypes = InferActionsType<typeof actions>
+type ActionsTypes = InferActionsType<typeof actions>
 export const actions = {
     followAC: (userId: number) => ({ type: FOLLOW, userId } as const),
     unfollowAC: (userId: number) => ({ type: UNFOLLOW, userId } as const),
-    setUsersAC: (users: Array<userType>) => ({ type: SET_USERS, users } as const),
+    setUsersAC: (users: Array<UserType>) => ({ type: SET_USERS, users } as const),
     setCurentPageAC: (curentPage: number) => ({ type: SET_CURENT_PAGE, curentPage } as const),
     setTotalUsersCountAC: (totalUsersCount: number) =>
         ({ type: SET_TOTAL_USERS_COUNT, count: totalUsersCount } as const),
@@ -90,12 +90,12 @@ export const actions = {
         ({ type: TOGGLE_IS_FOLOWING_PROGRESS, isLoading, userId } as const)
 }
 
-type getStateType = () => globalStateType
-type dispatchType = Dispatch<actionsTypes>
-type thunkType = ThunkAction<Promise<void>, globalStateType, unknown, actionsTypes>
+type GetStateType = () => GlobalStateType
+type DispatchType = Dispatch<ActionsTypes>
+type ThunkType = ThunkAction<Promise<void>, GlobalStateType, unknown, ActionsTypes>
 
 export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
-    return async (dispatch: dispatchType, getState: getStateType) => {            // Можно и так
+    return async (dispatch: DispatchType, getState: GetStateType) => {            // Можно и так
         dispatch(actions.toggleIsLoadingAC(true))
         let data = await usersAPI.getUsers(curentPage, pageSize)
         dispatch(actions.setCurentPageAC(curentPage))
@@ -105,23 +105,23 @@ export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
     }
 }
 
-export const followTC = (userId: number): thunkType => {
+export const followTC = (userId: number): ThunkType => {
     return async (dispatch) => {
         dispatch(actions.toggleIsFolowingProgressAC(true, userId))
         let data = await usersAPI.followUser(userId)
         //debugger
-        if (data.resultCode === resultCodeEnum.Success) {
+        if (data.resultCode === ResultCodeEnum.Success) {
             dispatch(actions.followAC(userId))
         }
         dispatch(actions.toggleIsFolowingProgressAC(false, userId))
     }
 }
 
-export const unfollowTC = (userId: number): thunkType => {
+export const unfollowTC = (userId: number): ThunkType => {
     return async (dispatch) => {
         dispatch(actions.toggleIsFolowingProgressAC(true, userId))
         let data = await usersAPI.unfollowUser(userId)
-        if (data.resultCode === resultCodeEnum.Success) {
+        if (data.resultCode === ResultCodeEnum.Success) {
             dispatch(actions.unfollowAC(userId))
         }
         dispatch(actions.toggleIsFolowingProgressAC(false, userId))

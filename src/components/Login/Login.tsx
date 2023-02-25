@@ -6,7 +6,7 @@ import { loginTC } from "../../redux/authReduser"
 import { Navigate } from "react-router-dom"
 import cs from "../common/FormsControl/FormsControl.module.css"
 import { getIsAuthSR } from "../../utils/resecelectors/profile-selectors"
-import { globalStateType } from "../../redux/redux-store"
+import { GlobalStateType } from "../../redux/redux-store"
 import React from "react"
 
 type loginFormOwnPropsType = {
@@ -83,7 +83,7 @@ const Login: React.FC<propsType> = (props) => {
     )
 }
 
-let mapStateToProps = (state: globalStateType): mapStatePropsType => {
+let mapStateToProps = (state: GlobalStateType): mapStatePropsType => {
     return {
         isAuth: getIsAuthSR(state), // Пригодилась (этот же селектор в ProfileContainer)
         captchaUrl: state.auth.captchaUrl

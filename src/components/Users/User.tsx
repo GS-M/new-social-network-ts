@@ -1,11 +1,11 @@
 import cs from './Users.module.css'
 import usersDefaultAvatar from '../../accets/images/usersDefaultAvatar.jpg'
 import { NavLink } from 'react-router-dom';
-import { userType } from '../../common-types/common-types';
+import { UserType } from '../../common-types/common-types';
 //import { usersAPI } from '../../api/api';
 
 type propsType = {
-    user: userType
+    user: UserType
     folowingInProgress: Array<number>
     unfollowTC: (userId: number) => void
     followTC: (userId: number) => void

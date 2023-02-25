@@ -1,19 +1,19 @@
-export type postsDataType = {
+export type PostsDataType = {
     id: number
     message: string
     likesCount: number
 } /* Формат данных для постов */
 
-export type profileType = {
+export type ProfileType = {
     iuserId: number
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
-    contacts: contactsType
-    photos: photosType
+    contacts: ContactsType
+    photos: PhotosType
 } /* Все данные профиля */
 
-export type contactsType = {
+export type ContactsType = {
     github: string
     vk: string
     facebook: string
@@ -23,25 +23,25 @@ export type contactsType = {
     youtube: string
     mainLink: string
 }
-export type photosType = {
+export type PhotosType = {
     small: string | null
     large: string | null
 }
 
-export type userType = {
+export type UserType = {
     id: number
     name: string
     status: string
-    photos: photosType
+    photos: PhotosType
     followed: boolean
 } /*Отдельно взятый пользователь */
 
 
-export type dialogsDataType = {
+export type DialogsDataType = {
     id: number,
     name: string
 }
-export type messagesDataType = {
+export type MessagesDataType = {
     id: number,
     message: string
 }

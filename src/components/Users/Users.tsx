@@ -1,4 +1,4 @@
-import { userType } from '../../common-types/common-types';
+import { UserType } from '../../common-types/common-types';
 import { Paginator } from '../common/Paginator/Paginator';
 import { User } from './User';
 //import { usersAPI } from '../../api/api';
@@ -7,7 +7,7 @@ type propsType = {
     totalUsersCount: number
     pageSize: number
     curentPage: number
-    users: Array<userType>
+    users: Array<UserType>
     folowingInProgress: Array<number>
 
     onPageChanged: (pageNumber: number) => void

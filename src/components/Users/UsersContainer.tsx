@@ -9,13 +9,13 @@ import {
     getCurentPage, getFolowingInProgress, getIsLoading, getPageSize,
     getTotalUsersCount, getUsersSelector
 } from "../../utils/resecelectors/users-selectors";
-import { userType } from "../../common-types/common-types";
-import { globalStateType } from "../../redux/redux-store";
+import { UserType } from "../../common-types/common-types";
+import { GlobalStateType } from "../../redux/redux-store";
 
 type mapStatePropsType = {
     curentPage: number
     pageSize: number
-    users: Array<userType>
+    users: Array<UserType>
     totalUsersCount: number
     isLoading: boolean
     folowingInProgress: Array<number>
@@ -79,7 +79,7 @@ export class UsersAPIComponent extends React.Component<propsType> {
     }
 }
 
-let mapStateToProps = (state: globalStateType): mapStatePropsType => {
+let mapStateToProps = (state: GlobalStateType): mapStatePropsType => {
     return {
         //users: getUsers(state),
         users: getUsersSelector(state),
@@ -92,7 +92,7 @@ let mapStateToProps = (state: globalStateType): mapStatePropsType => {
 }
 //<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState
 export let UsersContainer = compose(
-    connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, globalStateType>
+    connect<mapStatePropsType, mapDispatchPropsType, ownPropsType, GlobalStateType>
         (mapStateToProps, { getUsersThunkCreator, followTC, unfollowTC })
 )(UsersAPIComponent)
 //<propsType>

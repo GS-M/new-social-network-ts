@@ -1,11 +1,11 @@
 
-type initialStateType = {
+type InitialStateType = {
 
 }
-let initialState: initialStateType = {
+let initialState: InitialStateType = {
 
 }
-export const sidebarReducer = (state = initialState, action: any): initialStateType => {
+export const sidebarReducer = (state = initialState, action: any): InitialStateType => {
 
     return state
 }

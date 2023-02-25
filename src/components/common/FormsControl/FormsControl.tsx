@@ -1,5 +1,5 @@
 import { Field, WrappedFieldProps } from 'redux-form'
-import { fieldValidatorType } from '../../../utils/validators/validators'
+import { FieldValidatorType } from '../../../utils/validators/validators'
 import cs from './FormsControl.module.css'
 
 export const Textarea: React.FC<WrappedFieldProps> = ({ input, meta, ...props }) => {
@@ -25,10 +25,10 @@ export const Input: React.FC<WrappedFieldProps> = ({ input, meta, ...props }) =>
         </div>
     )
 }
-export function createField<formsKeysType extends string>(placeholder: string | undefined,
+export function createField<FormsKeysType extends string>(placeholder: string | undefined,
     component: React.FC<WrappedFieldProps>,
-    name: formsKeysType,
-    validate: Array<fieldValidatorType> | undefined,
+    name: FormsKeysType,
+    validate: Array<FieldValidatorType> | undefined,
     props = {}, text = '') {
     return (
         <div>
@@ -40,7 +40,7 @@ export function createField<formsKeysType extends string>(placeholder: string | 
 // export const createField = (placeholder: string | undefined,
 //     component: React.FC<WrappedFieldProps>,
 //     name: loginFormValuesTypeKeys,
-//     validate: Array<fieldValidatorType> | undefined,
+//     validate: Array<FieldValidatorType> | undefined,
 //     props = {}, text = '') => {
 //     return (
 //         <div>

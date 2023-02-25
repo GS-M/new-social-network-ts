@@ -1,4 +1,4 @@
-import { dialogsDataType, messagesDataType } from "../common-types/common-types";
+import { DialogsDataType, MessagesDataType } from "../common-types/common-types";
 
 const SEND_MESSAGE = 'dialogs/SEND_MESSAGE';
 
@@ -9,18 +9,18 @@ let initialState = {
         { id: 3, name: 'Nikolay 3' },
         { id: 4, name: 'Nikolay 4' },
         { id: 5, name: 'Nikolay 5' }
-    ] as Array<dialogsDataType>,
+    ] as Array<DialogsDataType>,
     messagesData: [
         { id: 1, message: 'Hi hi' },
         { id: 2, message: 'Hallow' },
         { id: 3, message: 'yoyo' },
         { id: 4, message: 'Arigaaato' },
-    ] as Array<messagesDataType>,
+    ] as Array<MessagesDataType>,
 }
 
-export type initialStateType = typeof initialState
+export type InitialStateType = typeof initialState
 
-export const dialogsReducer = (state = initialState, action: sendMessageActionType): initialStateType => {
+export const dialogsReducer = (state = initialState, action: SendMessageActionType): InitialStateType => {
     switch (action.type) {
         case SEND_MESSAGE:
             return {
@@ -36,9 +36,9 @@ export const dialogsReducer = (state = initialState, action: sendMessageActionTy
     }
 }
 
-type sendMessageActionType = {
+type SendMessageActionType = {
     type: typeof SEND_MESSAGE,
     newMessageBody: string
 }
 export const sendMessageAC = (newMessageBody: string):
-    sendMessageActionType => ({ type: SEND_MESSAGE, newMessageBody })
+    SendMessageActionType => ({ type: SEND_MESSAGE, newMessageBody })
