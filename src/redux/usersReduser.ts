@@ -1,10 +1,9 @@
 import { Dispatch } from "redux";
-import { ThunkAction } from "redux-thunk";
 import { ResultCodeEnum } from "../api/api";
 import { usersAPI } from "../api/users-api";
 import { UserType } from "../common-types/common-types";
 import { updateObjectInArrey } from "../utils/validators/function-helpers";
-import { GlobalStateType, InferActionsType } from "./redux-store";
+import { BaseThunkType, GlobalStateType, InferActionsType } from "./redux-store";
 
 const FOLLOW = 'user/FOLLOW';
 const UNFOLLOW = 'user/UNFOLLOW';
@@ -32,7 +31,7 @@ let initialState = {
     isLoading: false,
     folowingInProgress: [] as Array<number> //Массив id пользователей
 }
-export const usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
+export const usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
     switch (action.type) {
         case FOLLOW:
@@ -78,7 +77,7 @@ export const usersReducer = (state = initialState, action: ActionsTypes): Initia
 }
 
 
-type ActionsTypes = InferActionsType<typeof actions>
+type ActionsType = InferActionsType<typeof actions>
 export const actions = {
     followAC: (userId: number) => ({ type: FOLLOW, userId } as const),
     unfollowAC: (userId: number) => ({ type: UNFOLLOW, userId } as const),
@@ -91,12 +90,9 @@ export const actions = {
         ({ type: TOGGLE_IS_FOLOWING_PROGRESS, isLoading, userId } as const)
 }
 
-type GetStateType = () => GlobalStateType
-type DispatchType = Dispatch<ActionsTypes>
-type ThunkType = ThunkAction<Promise<void>, GlobalStateType, unknown, ActionsTypes>
-
+type ThunkType = BaseThunkType<ActionsType>
 export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
-    return async (dispatch: DispatchType, getState: GetStateType) => {            // Можно и так
+    return async (dispatch: Dispatch<ActionsType>, getState: () => GlobalStateType) => {        // Можно и так
         dispatch(actions.toggleIsLoadingAC(true))
         let data = await usersAPI.getUsers(curentPage, pageSize)
         dispatch(actions.setCurentPageAC(curentPage))
@@ -105,19 +101,16 @@ export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
         dispatch(actions.setTotalUsersCountAC(data.totalCount))
     }
 }
-
 export const followTC = (userId: number): ThunkType => {
     return async (dispatch) => {
         dispatch(actions.toggleIsFolowingProgressAC(true, userId))
         let data = await usersAPI.followUser(userId)
-        //debugger
         if (data.resultCode === ResultCodeEnum.Success) {
             dispatch(actions.followAC(userId))
         }
         dispatch(actions.toggleIsFolowingProgressAC(false, userId))
     }
 }
-
 export const unfollowTC = (userId: number): ThunkType => {
     return async (dispatch) => {
         dispatch(actions.toggleIsFolowingProgressAC(true, userId))

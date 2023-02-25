@@ -1,5 +1,5 @@
 import { UserType } from "../common-types/common-types"
-import { DefaultResponceType, instance, ResultCodeEnum } from "./api"
+import { DefaultResponceType, instance } from "./api"
 
 
 type GetUsersType = {

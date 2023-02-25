@@ -1,16 +1,14 @@
 import { getAuthUserDataTC } from "./authReduser";
+import { InferActionsType } from "./redux-store";
 
 const SET_INITIALISED = 'app/SET_INITIALISED';
 
-export type InitialStateType = {
-    initialised: boolean,
-}
-
-let initialState: InitialStateType = {
+let initialState = {
     initialised: false,
 }
+export type InitialStateType = typeof initialState
 
-export const appReducer = (state = initialState, action: SetInitialisedACType): InitialStateType => {
+export const appReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case SET_INITIALISED:
             return {
@@ -23,10 +21,10 @@ export const appReducer = (state = initialState, action: SetInitialisedACType): 
     }
 }
 
-type SetInitialisedACType = {
-    type: typeof SET_INITIALISED
+type ActionsTypes = InferActionsType<typeof actions>
+export const actions = {
+    setInitialisedAC: () => ({ type: SET_INITIALISED } as const)
 }
-export const setInitialisedAC = (): SetInitialisedACType => ({ type: SET_INITIALISED })
 
 //type thunkType =ThunkAction<Promise<void>, globalStateType, unknown, actionsType>
 export const initialiseAppTC = () => {
@@ -35,7 +33,7 @@ export const initialiseAppTC = () => {
 
         Promise.all([promise])
             .then(() => {
-                dispatch(setInitialisedAC())
+                dispatch(actions.setInitialisedAC())
             })
 
     }
