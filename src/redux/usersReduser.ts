@@ -1,6 +1,9 @@
+import { Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { usersAPI } from "../api/api";
 import { userType } from "../common-types/common-types";
 import { updateObjectInArrey } from "../utils/validators/function-helpers";
+import { globalStateType } from "./redux-store";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -124,8 +127,12 @@ export const toggleIsFolowingProgressAC = (isLoading: boolean, userId: number):
     toggleIsFolowingProgressActionType => ({ type: TOGGLE_IS_FOLOWING_PROGRESS, isLoading, userId })
 
 
+type getStateType = () => globalStateType
+type dispatchType = Dispatch<actionsTypes>
+type thunkType = ThunkAction<Promise<void>, globalStateType, unknown, actionsTypes>
+
 export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
-    return async (dispatch: any) => {
+    return async (dispatch: dispatchType, getState: getStateType) => {            // Можно и так
         dispatch(toggleIsLoadingAC(true))
         let data = await usersAPI.getUsers(curentPage, pageSize)
         dispatch(setCurentPageAC(curentPage))
@@ -136,8 +143,8 @@ export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
     }
 }
 
-export const followTC = (userId: number) => {
-    return async (dispatch: any) => {
+export const followTC = (userId: number): thunkType => {
+    return async (dispatch) => {
         dispatch(toggleIsFolowingProgressAC(true, userId))
         let data = await usersAPI.followUser(userId)
         if (data.resultCode === 0) {
@@ -147,8 +154,8 @@ export const followTC = (userId: number) => {
     }
 }
 
-export const unfollowTC = (userId: number) => {
-    return async (dispatch: any) => {
+export const unfollowTC = (userId: number): thunkType => {
+    return async (dispatch) => {
         dispatch(toggleIsFolowingProgressAC(true, userId))
         let data = await usersAPI.unfollowUser(userId)
         if (data.resultCode === 0) {

@@ -2,15 +2,6 @@ import { dialogsDataType, messagesDataType } from "../common-types/common-types"
 
 const SEND_MESSAGE = 'dialogs/SEND_MESSAGE';
 
-// type dialogsDataType = {
-//     id: number,
-//     name: string
-// }
-// type messagesDataType = {
-//     id: number,
-//     message: string
-// }
-
 let initialState = {
     dialogsData: [
         { id: 1, name: 'Nikolay' },
@@ -29,8 +20,7 @@ let initialState = {
 
 export type initialStateType = typeof initialState
 
-export const dialogsReducer = (state = initialState, action: any): initialStateType => {
-
+export const dialogsReducer = (state = initialState, action: sendMessageActionType): initialStateType => {
     switch (action.type) {
         case SEND_MESSAGE:
             return {
