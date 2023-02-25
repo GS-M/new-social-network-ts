@@ -7,7 +7,6 @@ import { usersReducer } from "./usersReduser";
 import thunkMiddleware from "redux-thunk";
 import { reducer as formReducer } from "redux-form";
 import { appReducer } from "./appReduser";
-//import { appReducer } from "./appReduser.ts";
 
 let reducers = combineReducers({
     profilePage: profileReducer,
@@ -33,3 +32,5 @@ export const store = legacy_createStore(reducers, composeEnhancers(
 // @ts-ignore
 window.__store__ = store
 
+type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
+export type InferActionsType<T extends { [key: string]: (...args: any) => any }> = ReturnType<PropertiesTypes<T>>
