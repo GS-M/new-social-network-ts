@@ -10,25 +10,26 @@ const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING';
 const TOGGLE_IS_FOLOWING_PROGRESS = 'TOGGLE_IS_FOLOWING_PROGRESS';
 
-export type initialStateType = {
-    users: Array<userType>,
-    pageSize: number,
-    totalUsersCount: number,
-    curentPage: number,
-    isLoading: boolean,
-    folowingInProgress: Array<number>
-}
+// export type initialStateType = {
+//     users: Array<userType>,
+//     pageSize: number,
+//     totalUsersCount: number,
+//     curentPage: number,
+//     isLoading: boolean,
+//     folowingInProgress: Array<number>
+// }
+export type initialStateType = typeof initialState
 
-
-let initialState: initialStateType = {
-    users: [],
+let initialState = {
+    users: [] as Array<userType>,
     pageSize: 8,
     totalUsersCount: 0,
     curentPage: 1,
     isLoading: false,
-    folowingInProgress: [],  //Массив id пользователей
+    folowingInProgress: [] as Array<number> //Массив id пользователей
 }
-export const usersReducer = (state = initialState, action: any): initialStateType => {
+export const usersReducer = (state = initialState, action: actionsTypes): initialStateType => {
+
     switch (action.type) {
         case FOLLOW:
             return {
@@ -62,15 +63,20 @@ export const usersReducer = (state = initialState, action: any): initialStateTyp
             return { ...state, isLoading: action.isLoading }
         case TOGGLE_IS_FOLOWING_PROGRESS:
             return {
-                ...state, folowingInProgress: action.isLoading === true
+                ...state,
+                folowingInProgress: action.isLoading === true
                     ? [...state.folowingInProgress, action.userId]
-                    : [state.folowingInProgress.filter(id => id !== action.userId)]
+                    : state.folowingInProgress.filter(id => id !== action.userId)
             }
         default:
             return state;
     }
 }
 
+
+type actionsTypes = followActionType | unfollowActionType | setUsersActionType |
+    setCurentPageAction | setTotalUsersCountActiontype | toggleIsLoadingActiontype |
+    toggleIsFolowingProgressActionType
 
 type followActionType = {
     type: typeof FOLLOW
