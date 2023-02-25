@@ -18,9 +18,12 @@ const LoginForm:
         return (
             <form onSubmit={props.handleSubmit}>
 
-                {createField('Email', Input, 'email', [requiredField])}
-                {createField('Password', Input, 'password', [requiredField], { type: 'password' })}
-                {createField(undefined, Input, 'rememberMe', undefined, { type: 'checkbox' }, 'remember me')}
+                {createField<loginFormValuesTypeKeys>
+                    ('Email', Input, 'email', [requiredField])}
+                {createField<loginFormValuesTypeKeys>
+                    ('Password', Input, 'password', [requiredField], { type: 'password' })}
+                {createField<loginFormValuesTypeKeys>
+                    (undefined, Input, 'rememberMe', undefined, { type: 'checkbox' }, 'remember me')}
 
                 {props.captchaUrl && <img alt='Captcha' src={props.captchaUrl} />}
                 {props.captchaUrl && createField('Captcha', Input, 'captcha', [requiredField], {})}
@@ -53,6 +56,7 @@ type loginFormValuesType = {
     rememberMe: boolean
     captcha: string
 }
+type loginFormValuesTypeKeys = Extract<keyof loginFormValuesType, string>
 
 type mapStatePropsType = {
     isAuth: boolean

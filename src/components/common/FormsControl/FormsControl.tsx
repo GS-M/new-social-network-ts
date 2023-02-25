@@ -25,12 +25,11 @@ export const Input: React.FC<WrappedFieldProps> = ({ input, meta, ...props }) =>
         </div>
     )
 }
-
-export const createField = (placeholder: string | undefined,
+export function createField<formsKeysType extends string>(placeholder: string | undefined,
     component: React.FC<WrappedFieldProps>,
-    name: string,
+    name: formsKeysType,
     validate: Array<fieldValidatorType> | undefined,
-    props = {}, text = '') => {
+    props = {}, text = '') {
     return (
         <div>
             <Field placeholder={placeholder} component={component} name={name}
@@ -38,3 +37,15 @@ export const createField = (placeholder: string | undefined,
         </div>
     )
 }
+// export const createField = (placeholder: string | undefined,
+//     component: React.FC<WrappedFieldProps>,
+//     name: loginFormValuesTypeKeys,
+//     validate: Array<fieldValidatorType> | undefined,
+//     props = {}, text = '') => {
+//     return (
+//         <div>
+//             <Field placeholder={placeholder} component={component} name={name}
+//                 validate={validate} {...props} />{text}
+//         </div>
+//     )
+// }
