@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { ResultCodeEnum, usersAPI } from "../api/api";
+import { ResultCodeEnum } from "../api/api";
+import { usersAPI } from "../api/users-api";
 import { UserType } from "../common-types/common-types";
 import { updateObjectInArrey } from "../utils/validators/function-helpers";
 import { GlobalStateType, InferActionsType } from "./redux-store";

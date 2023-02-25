@@ -1,6 +1,8 @@
 import { stopSubmit } from "redux-form";
 import { ThunkAction } from "redux-thunk";
-import { authAPI, ResultCodeCapchaEnum, ResultCodeEnum, secirityAPI } from "../api/api";
+import { ResultCodeCapchaEnum, ResultCodeEnum } from "../api/api";
+import { authAPI } from "../api/auth-api";
+import { secirityAPI } from "../api/security-api";
 import { GlobalStateType } from "./redux-store";
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
@@ -104,9 +106,8 @@ export const logoutTC = (): ThunkType => {
 }
 export const getCapchaUrlTC = (): ThunkType => {
     return async (dispatch) => {
-        const responce = await secirityAPI.getCaptchaUrl()
-        debugger
-        const capchaURL = responce.data.url
+        const data = await secirityAPI.getCaptchaUrl()
+        const capchaURL = data.url
         dispatch(getCaptchaUrlAC(capchaURL))
     }
 }

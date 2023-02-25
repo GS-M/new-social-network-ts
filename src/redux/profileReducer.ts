@@ -1,6 +1,6 @@
 import { stopSubmit } from "redux-form";
 import { ThunkAction } from "redux-thunk";
-import { profileAPI } from "../api/api";
+import { profileAPI } from "../api/profile-api";
 import { PhotosType, PostsDataType, ProfileType } from "../common-types/common-types";
 import { GlobalStateType } from "./redux-store";
 
@@ -85,34 +85,34 @@ export const getUserProfileTC = (userId: number): ThunkType => {
 }
 export const setUserStatusTC = (userId: number): ThunkType => {
     return async (dispatch) => {
-        let responce = await profileAPI.getStatus(userId)
-        dispatch(setUserStatusAC(responce.data))
+        let data = await profileAPI.getStatus(userId)
+        dispatch(setUserStatusAC(data))
     }
 }
 export const updateUserStatusTC = (status: string): ThunkType => {
     return async (dispatch) => {
-        let responce = await profileAPI.updateStatus(status)
-        if (responce.data.resultCode === 0) {
+        let data = await profileAPI.updateStatus(status)
+        if (data.resultCode === 0) {
             dispatch(setUserStatusAC(status))
         }
     }
 }
 export const savePhotoTC = (file: any): ThunkType => {                     /////////////
     return async (dispatch) => {
-        let responce = await profileAPI.savePhoto(file)
-        if (responce.data.resultCode === 0) {
-            dispatch(savePhotoSuccessAC(responce.data.data.photos))
+        let data = await profileAPI.savePhoto(file)
+        if (data.resultCode === 0) {
+            dispatch(savePhotoSuccessAC(data.data.photos))
         }
     }
 }
 export const saveProfileTC = (profile: ProfileType): ThunkType => {
     return async (dispatch: any, getState: any) => {                      ///////////
         const userId = getState().auth.id
-        let responce = await profileAPI.saveProfile(profile)
-        if (responce.data.resultCode === 0) {
+        let data = await profileAPI.saveProfile(profile)
+        if (data.resultCode === 0) {
             dispatch(getUserProfileTC(userId))
         } else {
-            dispatch(stopSubmit('profileData', { _error: responce.data.messages[0] }));
+            dispatch(stopSubmit('profileData', { _error: data.messages[0] }));
         }
     }
 }
