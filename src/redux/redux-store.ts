@@ -22,8 +22,9 @@ let reducers = combineReducers({
 type ReducersType = typeof reducers
 export type GlobalStateType = ReturnType<ReducersType>  // Определяет тип, возврощаемый из типа
 
-type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
-export type InferActionsType<T extends { [key: string]: (...args: any) => any }> = ReturnType<PropertiesTypes<T>>
+// type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
+// export type InferActionsType<T extends { [key: string]: (...args: any) => any }> = ReturnType<PropertiesTypes<T>>
+export type InferActionsType<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never
 
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, GlobalStateType, unknown, A>
 

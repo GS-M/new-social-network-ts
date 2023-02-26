@@ -29,9 +29,9 @@ type ownPropsType = {
     // Прямые props из компоненты выше
 }
 
-type propsType = mapStatePropsType & mapDispatchPropsType & ownPropsType
+type PropsType = mapStatePropsType & mapDispatchPropsType & ownPropsType
 
-export class UsersAPIComponent extends React.Component<propsType> {
+export class UsersAPIComponent extends React.Component<PropsType> {
     componentDidMount() {
         const { curentPage, pageSize } = this.props //Деструкторизация внутри метода
         if (this.props.users.length === 0) {

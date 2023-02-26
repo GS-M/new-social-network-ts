@@ -10,7 +10,7 @@ import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import Login from './components/Login/Login';
 import { Preloader } from './components/common/Preloader/Preloader';
-import { store } from './redux/redux-store';
+import { GlobalStateType, store } from './redux/redux-store';
 import { UsersContainer } from './components/Users/UsersContainer';
 
 //import { DialogsContainer } from './components/Dialogs/DialogsContainer';
@@ -18,8 +18,12 @@ const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsCo
 //import { ProfileContainer } from './components/Profile/ProfileContainer';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 
+type PropsType = {
+  initialised: boolean
+  initialiseAppTC: () => void
+}
 
-class App extends React.Component {
+class App extends React.Component<PropsType> {
   componentDidMount() {
     this.props.initialiseAppTC()
   }
@@ -64,14 +68,14 @@ class App extends React.Component {
   }
 }
 
-const mapStateToprops = (state) => ({
+const mapStateToprops = (state: GlobalStateType) => ({
   initialised: state.app.initialised
 })
 
 //export default connect(mapStateToprops, { initialiseAppTC })(App)
 let AppWithRouter = connect(mapStateToprops, { initialiseAppTC })(App)
 
-export let AppContainer = (props) => {
+export let AppContainer = () => {
   return (
     <Provider store={store}>
       <AppWithRouter />

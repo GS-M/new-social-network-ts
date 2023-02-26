@@ -1,5 +1,5 @@
 //import axios from 'axios';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Profile from './Profile';
 import { getUserProfileTC, setUserStatusTC, updateUserStatusTC, savePhotoTC, saveProfileTC } from '../../redux/profileReducer';
@@ -8,6 +8,40 @@ import { withAuthRedirectHOC } from '../../hoc/authRedirect';
 import { compose } from 'redux';
 import { getIsAuthSR, getMyUserIdSR, getProfileSR, getStatusSR } from '../../utils/resecelectors/profile-selectors';
 
+const ProfileApiComponent = (props) => {
+    let params = useParams()
+    let userCurrentID = params.userId
+    if (!params.userId) {
+        userCurrentID = props.myUserID
+    }
+
+    useEffect(() => {
+        props.getUserProfileTC(userCurrentID)
+        props.setUserStatusTC(userCurrentID)
+    }, [userCurrentID])
+    // [params]
+    // [params.userId]
+    // [props] - крашит
+    // [props, userCurrentID]) -крашит
+    return (
+        <Profile profile={props.profile} status={props.status}
+            updateUserStatusTC={props.updateUserStatusTC}
+            isOwner={!params.userId} savePhotoTC={props.savePhotoTC}
+            saveProfileTC={props.saveProfileTC} />
+    )
+}
+let mapStateToProps = (state) => ({
+    profile: getProfileSR(state),
+    status: getStatusSR(state),
+    myUserID: getMyUserIdSR(state),
+    isAuth: getIsAuthSR(state)
+})
+
+const ProfileContainer = compose(connect(mapStateToProps, {
+    getUserProfileTC, setUserStatusTC, updateUserStatusTC, savePhotoTC, saveProfileTC
+}),
+    withAuthRedirectHOC)(ProfileApiComponent)
+export default ProfileContainer
 
 ////
 // const ProfileApiComponent = (props) => {
@@ -102,42 +136,3 @@ import { getIsAuthSR, getMyUserIdSR, getProfileSR, getStatusSR } from '../../uti
 //         return (<Profile {...this.props} profile={this.props.profile} />)
 //     }
 // }
-
-
-
-
-
-const ProfileApiComponent = (props) => {
-    let params = useParams()
-    let userCurrentID = params.userId
-    if (!params.userId) {
-        userCurrentID = props.myUserID
-    }
-
-    useEffect(() => {
-        props.getUserProfileTC(userCurrentID)
-        props.setUserStatusTC(userCurrentID)
-    }, [userCurrentID])
-    // [params]
-    // [params.userId]
-    // [props] - крашит
-    // [props, userCurrentID]) -крашит
-    return (
-        <Profile profile={props.profile} status={props.status}
-            updateUserStatusTC={props.updateUserStatusTC}
-            isOwner={!params.userId} savePhotoTC={props.savePhotoTC}
-            saveProfileTC={props.saveProfileTC} />
-    )
-}
-let mapStateToProps = (state) => ({
-    profile: getProfileSR(state),
-    status: getStatusSR(state),
-    myUserID: getMyUserIdSR(state),
-    isAuth: getIsAuthSR(state)
-})
-
-const ProfileContainer = compose(connect(mapStateToProps, {
-    getUserProfileTC, setUserStatusTC, updateUserStatusTC, savePhotoTC, saveProfileTC
-}),
-    withAuthRedirectHOC)(ProfileApiComponent)
-export default ProfileContainer

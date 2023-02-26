@@ -1,19 +1,19 @@
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { dialogsDataType, messagesDataType } from '../../common-types/common-types';
+import { DialogsDataType, MessagesDataType } from '../../common-types/common-types';
 import { withAuthRedirectHOC } from '../../hoc/authRedirect';
 import { actions } from '../../redux/dialogsReducer';
 
-import { globalStateType } from '../../redux/redux-store';
+import { GlobalStateType } from '../../redux/redux-store';
 import Dialogs from './Dialogs';
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: GlobalStateType) => {
     return {
         dialogsData: state.dialogsPage.dialogsData,
         messagesData: state.dialogsPage.messagesData
     }
 }
-const DialogsContainer = compose(
+const DialogsContainer = compose<React.ComponentType>(
     connect(mapStateToProps, { sendMessageAC: actions.sendMessageAC }), withAuthRedirectHOC)(Dialogs)
 export default DialogsContainer
 

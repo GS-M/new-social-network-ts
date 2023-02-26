@@ -9,20 +9,27 @@ import { getIsAuthSR } from "../../utils/resecelectors/profile-selectors"
 import { GlobalStateType } from "../../redux/redux-store"
 import React from "react"
 
-type loginFormOwnPropsType = {
+type LoginFormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string
+}
+type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>
+type LoginFormOwnPropsType = {
     captchaUrl: string | null
 }
 const LoginForm:
-    React.FC<InjectedFormProps<loginFormValuesType, loginFormOwnPropsType> & loginFormOwnPropsType>
+    React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPropsType> & LoginFormOwnPropsType>
     = (props) => {
         return (
             <form onSubmit={props.handleSubmit}>
 
-                {createField<loginFormValuesTypeKeys>
+                {createField<LoginFormValuesTypeKeys>
                     ('Email', Input, 'email', [requiredField])}
-                {createField<loginFormValuesTypeKeys>
+                {createField<LoginFormValuesTypeKeys>
                     ('Password', Input, 'password', [requiredField], { type: 'password' })}
-                {createField<loginFormValuesTypeKeys>
+                {createField<LoginFormValuesTypeKeys>
                     (undefined, Input, 'rememberMe', undefined, { type: 'checkbox' }, 'remember me')}
 
                 {props.captchaUrl && <img alt='Captcha' src={props.captchaUrl} />}
@@ -48,27 +55,19 @@ const LoginForm:
         )
     }
 
-const LoginReduxForm = reduxForm<loginFormValuesType, loginFormOwnPropsType>({ form: 'login' })(LoginForm)
+const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnPropsType>({ form: 'login' })(LoginForm)
 
-type loginFormValuesType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha: string
-}
-type loginFormValuesTypeKeys = Extract<keyof loginFormValuesType, string>
-
-type mapStatePropsType = {
+type MapStatePropsType = {
     isAuth: boolean
     captchaUrl: string | null
 }
-type mapDispatchPropsType = {
+type MapDispatchPropsType = {
     loginTC: (email: string, password: string, rememberMe: boolean, captcha: string) => void
 }
-type propsType = mapStatePropsType & mapDispatchPropsType
+type propsType = MapStatePropsType & MapDispatchPropsType
 
 const Login: React.FC<propsType> = (props) => {
-    const onSubmit = (formData: loginFormValuesType) => {                ///
+    const onSubmit = (formData: LoginFormValuesType) => {                ///
         props.loginTC(formData.email, formData.password, formData.rememberMe, formData.captcha)
     }
     if (props.isAuth) {
@@ -83,7 +82,7 @@ const Login: React.FC<propsType> = (props) => {
     )
 }
 
-let mapStateToProps = (state: GlobalStateType): mapStatePropsType => {
+let mapStateToProps = (state: GlobalStateType): MapStatePropsType => {
     return {
         isAuth: getIsAuthSR(state), // Пригодилась (этот же селектор в ProfileContainer)
         captchaUrl: state.auth.captchaUrl
