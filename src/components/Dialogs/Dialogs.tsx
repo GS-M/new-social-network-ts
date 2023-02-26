@@ -1,4 +1,4 @@
-import { Field, InjectedFormProps, reduxForm } from 'redux-form';
+import { InjectedFormProps, reduxForm } from 'redux-form';
 import { DialogsDataType, MessagesDataType } from '../../common-types/common-types';
 import { maxLengthCreator, requiredField } from '../../utils/validators/validators';
 import { createField, Textarea } from '../common/FormsControl/FormsControl';

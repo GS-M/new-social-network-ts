@@ -8,6 +8,25 @@ import { withAuthRedirectHOC } from '../../hoc/authRedirect';
 import { compose } from 'redux';
 import { getIsAuthSR, getMyUserIdSR, getProfileSR, getStatusSR } from '../../utils/resecelectors/profile-selectors';
 
+
+/*
+type MapStatePropsType={
+   profile: ProfileType
+    status: string
+     myUserID:  number
+    isAuth: boolean
+}
+type MapDispatchPropsType={
+    getUserProfileTC :(currentId: number)=>void
+     setUserStatusTC:(currentId: number)=>void
+     updateUserStatusTC:()=>void
+      savePhotoTC()=>void
+      saveProfileTC()=>void
+}
+
+React.FC<MapStatePropsType&MapDispatchPropsType& RouteComponentProps<PathParamsType>
+*/
+
 const ProfileApiComponent = (props) => {
     let params = useParams()
     let userCurrentID = params.userId
@@ -42,7 +61,11 @@ const ProfileContainer = compose(connect(mapStateToProps, {
 }),
     withAuthRedirectHOC)(ProfileApiComponent)
 export default ProfileContainer
-
+/*
+type PathParamsType={
+    userId: string
+}
+*/
 ////
 // const ProfileApiComponent = (props) => {
 //     let params = useParams()

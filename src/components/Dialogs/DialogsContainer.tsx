@@ -1,9 +1,7 @@
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { DialogsDataType, MessagesDataType } from '../../common-types/common-types';
 import { withAuthRedirectHOC } from '../../hoc/authRedirect';
 import { actions } from '../../redux/dialogsReducer';
-
 import { GlobalStateType } from '../../redux/redux-store';
 import Dialogs from './Dialogs';
 

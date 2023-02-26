@@ -1,5 +1,10 @@
 import classes from './Post.module.css';
-const Post = (props) => {
+
+type PropsType = {
+    message: string
+    likesCount: number
+}
+const Post: React.FC<PropsType> = (props) => {
     return (
         <div className={classes.item}>
             <img alt='miniAvatar' src='https://zoolegenda.ru/common/htdocs/upload/thumbs/breed_medium/mops_59f0a3.png' />
