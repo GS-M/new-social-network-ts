@@ -26,16 +26,20 @@ export const Paginator: React.FC<propsType> = ({
     return (
         <div>
             {portionNumer > 1 &&
-                <button onClick={() => setPortionNumer(portionNumer - 1)}>Back</button>}
+                <button className={cs.users_buttons} onClick={() => setPortionNumer(portionNumer - 1)}>Back</button>}
 
             {pages.filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
                 .map(p => {
-                    return <span key={p} onClick={() => { onPageChanged(p) }}
-                        className={curentPage === p ? cs.selectedPage : ''}>{p}</span>
+                    return (
+                        <span key={p} onClick={() => { onPageChanged(p) }}
+                            className={`${cs.users_pages} ${curentPage === p ? cs.selectedPage : ''}`}>
+                            {p}
+                        </span>
+                    )
                 })}
 
             {portionCount > portionNumer &&
-                <button onClick={() => setPortionNumer(portionNumer + 1)}>Next</button>}
+                <button className={cs.users_buttons} onClick={() => setPortionNumer(portionNumer + 1)}>Next</button>}
         </div>
     )
 }

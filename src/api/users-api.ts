@@ -9,8 +9,9 @@ type GetUsersType = {
 }
 
 export const usersAPI = {
-    getUsers(curentPage = 1, pageSize = 10, term: string) {
-        return instance.get<GetUsersType>(`users?page=${curentPage}&count=${pageSize}&term=${term}`)
+    getUsers(curentPage = 1, pageSize = 10, term: string, friend: null | boolean = null) {
+        return instance.get<GetUsersType>(`users?page=${curentPage}&count=${pageSize}&term=${term}`
+            + (friend === null ? '' : `&friend=${friend}`))
             .then(response => response.data)
     },
     followUser(id: number) {

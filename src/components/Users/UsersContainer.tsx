@@ -22,7 +22,7 @@ type mapStatePropsType = {
     filter: FilterType
 }
 type mapDispatchPropsType = {
-    getUsersThunkCreator: (curentPage: number, pageSize: number, term: string) => void
+    getUsersThunkCreator: (curentPage: number, pageSize: number, filter: FilterType) => void
     followTC: (userId: number) => void
     unfollowTC: (userId: number) => void
 }
@@ -36,7 +36,7 @@ export class UsersAPIComponent extends React.Component<PropsType> {
     componentDidMount() {
         //const { curentPage, pageSize } = this.props //Деструкторизация внутри метода
         if (this.props.users.length === 0) {
-            this.props.getUsersThunkCreator(this.props.curentPage, this.props.pageSize, '')
+            this.props.getUsersThunkCreator(this.props.curentPage, this.props.pageSize, this.props.filter)
 
             // this.props.toggleIsLoadingAC(true)
             // usersAPI.getUsers(this.props.curentPage, this.props.pageSize).then(data => {
@@ -49,7 +49,7 @@ export class UsersAPIComponent extends React.Component<PropsType> {
     // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.curentPage}&count=${this.props.pageSize}`).then(response =>
 
     onPageChanged = (pageNumber: number) => {
-        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize, this.props.filter.term)
+        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize, this.props.filter)
 
         // this.props.setCurentPageAC(pageNumber);
         // this.props.toggleIsLoadingAC(true)
@@ -59,7 +59,7 @@ export class UsersAPIComponent extends React.Component<PropsType> {
         // })
     }
     onFilterChanged = (filter: FilterType) => {
-        this.props.getUsersThunkCreator(1, this.props.pageSize, filter.term)
+        this.props.getUsersThunkCreator(1, this.props.pageSize, filter)
     }
     render() {
         let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
