@@ -1,9 +1,8 @@
-import { Dispatch } from "redux";
 import { ResultCodeEnum } from "../api/api";
 import { usersAPI } from "../api/users-api";
 import { UserType } from "../common-types/common-types";
 import { updateObjectInArrey } from "../utils/validators/function-helpers";
-import { BaseThunkType, GlobalStateType, InferActionsType } from "./redux-store";
+import { BaseThunkType, InferActionsType } from "./redux-store";
 
 const FOLLOW = 'user/FOLLOW';
 const UNFOLLOW = 'user/UNFOLLOW';
@@ -103,8 +102,8 @@ export const actions = {
 }
 
 type ThunkType = BaseThunkType<ActionsType>
-export const getUsersThunkCreator = (curentPage: number, pageSize: number, filter: FilterType) => {
-    return async (dispatch: Dispatch<ActionsType>, getState: () => GlobalStateType) => {        // Можно и так
+export const getUsersThunkCreator = (curentPage: number, pageSize: number, filter: FilterType): ThunkType => {
+    return async (dispatch) => {        // Можно и так
         dispatch(actions.toggleIsLoadingAC(true))
         let data = await usersAPI.getUsers(curentPage, pageSize, filter.term, filter.friend)
         dispatch(actions.setCurentPageAC(curentPage))

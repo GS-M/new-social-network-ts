@@ -11,7 +11,7 @@ import Settings from './components/Settings/Settings';
 import Login from './components/Login/Login';
 import { Preloader } from './components/common/Preloader/Preloader';
 import { GlobalStateType, store } from './redux/redux-store';
-import { UsersContainer } from './components/Users/UsersContainer';
+import { UsersPage } from './components/Users/UsersContainer';
 
 //import { DialogsContainer } from './components/Dialogs/DialogsContainer';
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -54,7 +54,7 @@ class App extends React.Component<PropsType> {
               } />
               <Route path='/news' element={<News />} />
               <Route path='/settings' element={<Settings />} />
-              <Route path='/users' element={<UsersContainer />} />
+              <Route path='/users' element={<UsersPage />} />
               <Route path='/login' element={<Login />} />
               <Route path="/" element={<Navigate to="/profile" />} />
               <Route path='*' element={<div>404</div>} />

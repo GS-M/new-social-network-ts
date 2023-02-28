@@ -15,7 +15,6 @@ export const UsersSearchForm: React.FC<PropsType> = React.memo((props) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
         props.onFilterChanged(values)
         setSubmitting(false)
-
     }
     return (
         <div>

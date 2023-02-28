@@ -24,9 +24,13 @@ export type GlobalStateType = ReturnType<ReducersType>  // Определяет 
 
 // type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
 // export type InferActionsType<T extends { [key: string]: (...args: any) => any }> = ReturnType<PropertiesTypes<T>>
-export type InferActionsType<T> = T extends { [key: string]: (...args: any[]) => infer U } ? U : never
+export type InferActionsType<T> = T extends {
+    [key: string]: (...args: any[]) => infer U
+} ? U : never
 
-export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, GlobalStateType, unknown, A>
+export type BaseThunkType<ActionTypes extends Action,
+    ReturnType = Promise<void>> = ThunkAction<ReturnType,
+        GlobalStateType, unknown, ActionTypes>
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose  //для расширения Redux DevTools
@@ -36,3 +40,5 @@ export const store = legacy_createStore(reducers, composeEnhancers(
 // export let store = legacy_createStore(reducers, applyMiddleware(thunkMiddleware));
 // @ts-ignore
 window.__store__ = store
+
+export type AppDispatch = typeof store.dispatch
