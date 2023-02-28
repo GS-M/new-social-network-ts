@@ -8,10 +8,11 @@ import { connect, Provider } from 'react-redux';
 import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
-import Login from './components/Login/Login';
+
 import { Preloader } from './components/common/Preloader/Preloader';
 import { GlobalStateType, store } from './redux/redux-store';
 import { UsersPage } from './components/Users/UsersContainer';
+import { Login } from './components/Login/Login';
 
 //import { DialogsContainer } from './components/Dialogs/DialogsContainer';
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
