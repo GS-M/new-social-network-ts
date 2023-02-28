@@ -25,5 +25,8 @@ export const getIsLoading = (state: GlobalStateType) => {
 export const getFolowingInProgress = (state: GlobalStateType) => {
     return state.usersPage.folowingInProgress
 }
+export const getUsersFilter = (state: GlobalStateType) => {
+    return state.usersPage.filter
+}
 
 

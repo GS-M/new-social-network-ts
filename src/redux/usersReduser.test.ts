@@ -37,7 +37,8 @@ beforeEach(() => {
         totalUsersCount: 0,
         curentPage: 1,
         isLoading: false,
-        folowingInProgress: []
+        folowingInProgress: [],
+        filter: { term: '' }
     }
 })
 

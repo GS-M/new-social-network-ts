@@ -12,6 +12,7 @@ const SET_CURENT_PAGE = 'user/SET_CURENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'user/SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_LOADING = 'user/TOGGLE_IS_LOADING';
 const TOGGLE_IS_FOLOWING_PROGRESS = 'user/TOGGLE_IS_FOLOWING_PROGRESS';
+const SET_FILTER = 'user/SET_FILTER'
 
 // export type initialStateType = {
 //     users: Array<userType>,
@@ -22,6 +23,7 @@ const TOGGLE_IS_FOLOWING_PROGRESS = 'user/TOGGLE_IS_FOLOWING_PROGRESS';
 //     folowingInProgress: Array<number>
 // }
 export type InitialStateType = typeof initialState
+export type FilterType = typeof initialState.filter
 
 let initialState = {
     users: [] as Array<UserType>,
@@ -29,7 +31,10 @@ let initialState = {
     totalUsersCount: 0,
     curentPage: 1,
     isLoading: false,
-    folowingInProgress: [] as Array<number> //Массив id пользователей
+    folowingInProgress: [] as Array<number>, //Массив id пользователей
+    filter: {
+        term: ''
+    }
 }
 export const usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
@@ -71,6 +76,11 @@ export const usersReducer = (state = initialState, action: ActionsType): Initial
                     ? [...state.folowingInProgress, action.userId]
                     : state.folowingInProgress.filter(id => id !== action.userId)
             }
+        case SET_FILTER:
+            return {
+                ...state,
+                filter: action.payload
+            }
         default:
             return state;
     }
@@ -87,15 +97,17 @@ export const actions = {
         ({ type: SET_TOTAL_USERS_COUNT, count: totalUsersCount } as const),
     toggleIsLoadingAC: (isLoading: boolean) => ({ type: TOGGLE_IS_LOADING, isLoading } as const),
     toggleIsFolowingProgressAC: (isLoading: boolean, userId: number) =>
-        ({ type: TOGGLE_IS_FOLOWING_PROGRESS, isLoading, userId } as const)
+        ({ type: TOGGLE_IS_FOLOWING_PROGRESS, isLoading, userId } as const),
+    setFilterAC: (term: string) => ({ type: SET_FILTER, payload: { term } } as const)
 }
 
 type ThunkType = BaseThunkType<ActionsType>
-export const getUsersThunkCreator = (curentPage: number, pageSize: number) => {
+export const getUsersThunkCreator = (curentPage: number, pageSize: number, term: string) => {
     return async (dispatch: Dispatch<ActionsType>, getState: () => GlobalStateType) => {        // Можно и так
         dispatch(actions.toggleIsLoadingAC(true))
-        let data = await usersAPI.getUsers(curentPage, pageSize)
+        let data = await usersAPI.getUsers(curentPage, pageSize, term)
         dispatch(actions.setCurentPageAC(curentPage))
+        dispatch(actions.setFilterAC(term))
         dispatch(actions.toggleIsLoadingAC(false))
         dispatch(actions.setUsersAC(data.items))
         dispatch(actions.setTotalUsersCountAC(data.totalCount))

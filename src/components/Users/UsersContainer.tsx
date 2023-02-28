@@ -1,12 +1,12 @@
 import { connect } from "react-redux";
-import { getUsersThunkCreator, followTC, unfollowTC } from "../../redux/usersReduser"
+import { getUsersThunkCreator, followTC, unfollowTC, FilterType } from "../../redux/usersReduser"
 import React from "react";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader/Preloader";
 //import { withAuthRedirectHOC } from "../../hoc/authRedirect";
 import { compose } from "redux";
 import {
-    getCurentPage, getFolowingInProgress, getIsLoading, getPageSize,
+    getCurentPage, getUsersFilter, getFolowingInProgress, getIsLoading, getPageSize,
     getTotalUsersCount, getUsersSelector
 } from "../../utils/resecelectors/users-selectors";
 import { UserType } from "../../common-types/common-types";
@@ -18,10 +18,11 @@ type mapStatePropsType = {
     users: Array<UserType>
     totalUsersCount: number
     isLoading: boolean
-    folowingInProgress: Array<number>
+    folowingInProgress: Array<number>,
+    filter: FilterType
 }
 type mapDispatchPropsType = {
-    getUsersThunkCreator: (curentPage: number, pageSize: number) => void
+    getUsersThunkCreator: (curentPage: number, pageSize: number, term: string) => void
     followTC: (userId: number) => void
     unfollowTC: (userId: number) => void
 }
@@ -33,9 +34,9 @@ type PropsType = mapStatePropsType & mapDispatchPropsType & ownPropsType
 
 export class UsersAPIComponent extends React.Component<PropsType> {
     componentDidMount() {
-        const { curentPage, pageSize } = this.props //Деструкторизация внутри метода
+        //const { curentPage, pageSize } = this.props //Деструкторизация внутри метода
         if (this.props.users.length === 0) {
-            this.props.getUsersThunkCreator(curentPage, pageSize)
+            this.props.getUsersThunkCreator(this.props.curentPage, this.props.pageSize, '')
 
             // this.props.toggleIsLoadingAC(true)
             // usersAPI.getUsers(this.props.curentPage, this.props.pageSize).then(data => {
@@ -48,7 +49,7 @@ export class UsersAPIComponent extends React.Component<PropsType> {
     // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.curentPage}&count=${this.props.pageSize}`).then(response =>
 
     onPageChanged = (pageNumber: number) => {
-        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
+        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize, this.props.filter.term)
 
         // this.props.setCurentPageAC(pageNumber);
         // this.props.toggleIsLoadingAC(true)
@@ -56,6 +57,9 @@ export class UsersAPIComponent extends React.Component<PropsType> {
         //     this.props.toggleIsLoadingAC(false)
         //     this.props.setUsersAC(data.items);
         // })
+    }
+    onFilterChanged = (filter: FilterType) => {
+        this.props.getUsersThunkCreator(1, this.props.pageSize, filter.term)
     }
     render() {
         let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
@@ -68,9 +72,10 @@ export class UsersAPIComponent extends React.Component<PropsType> {
             <Users totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 curentPage={this.props.curentPage}
-                onPageChanged={this.onPageChanged}
                 users={this.props.users}
                 folowingInProgress={this.props.folowingInProgress}
+                onPageChanged={this.onPageChanged}
+                onFilterChanged={this.onFilterChanged}
 
                 followTC={this.props.followTC}
                 unfollowTC={this.props.unfollowTC}
@@ -87,7 +92,8 @@ let mapStateToProps = (state: GlobalStateType): mapStatePropsType => {
         totalUsersCount: getTotalUsersCount(state),
         curentPage: getCurentPage(state),
         isLoading: getIsLoading(state),
-        folowingInProgress: getFolowingInProgress(state)
+        folowingInProgress: getFolowingInProgress(state),
+        filter: getUsersFilter(state)
     }
 }
 //<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState
