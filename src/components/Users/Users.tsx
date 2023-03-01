@@ -88,8 +88,6 @@ export const Users: React.FC<propsType> = (props) => {
         if (users.length === 0) {
             dispatch(getUsersThunkCreator(actualPage, pageSize, actualFilter))
         }
-
-
     }, [location.search])
 
     return (
