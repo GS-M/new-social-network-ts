@@ -9,6 +9,7 @@ import { compose } from 'redux';
 import { getIsAuthSR, getMyUserIdSR, getProfileSR, getStatusSR } from '../../utils/resecelectors/profile-selectors';
 
 
+
 /*
 type MapStatePropsType={
    profile: ProfileType
@@ -43,10 +44,12 @@ const ProfileApiComponent = (props) => {
     // [props] - крашит
     // [props, userCurrentID]) -крашит
     return (
-        <Profile profile={props.profile} status={props.status}
-            updateUserStatusTC={props.updateUserStatusTC}
-            isOwner={!params.userId} savePhotoTC={props.savePhotoTC}
-            saveProfileTC={props.saveProfileTC} />
+        <div>
+            <Profile profile={props.profile} status={props.status}
+                updateUserStatusTC={props.updateUserStatusTC}
+                isOwner={!params.userId} savePhotoTC={props.savePhotoTC}
+                saveProfileTC={props.saveProfileTC} />
+        </div>
     )
 }
 let mapStateToProps = (state) => ({
