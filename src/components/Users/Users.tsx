@@ -9,6 +9,8 @@ import { User } from './User';
 import { UsersSearchForm } from './UsersSearchForm';
 import React, { useEffect } from 'react'
 import { AppDispatch } from '../../redux/redux-store';
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
+//import { URLSearchParams } from 'url';
 //import { usersAPI } from '../../api/api';
 
 type propsType = {}
@@ -36,11 +38,59 @@ export const Users: React.FC<propsType> = (props) => {
     const unfollow = (userId: number) => {
         dispatch(unfollowTC(userId))
     }
+
+    const location = useLocation()
+
+    const useNavigateSearch = () => {
+        const navigate = useNavigate();
+        return (pathname: string, params: any) =>
+            navigate(`${pathname}?${createSearchParams(params)}`)
+    }
+    const navigateSearch = useNavigateSearch();
+
     useEffect(() => {
-        if (users.length === 0) {
-            dispatch(getUsersThunkCreator(curentPage, pageSize, filter))
+        navigateSearch('/users', {
+            page: `${curentPage}`,
+            count: `${pageSize}`,
+            term: `${filter.term}`,
+            friend: `${filter.friend}`,
+            // search: `?term=${filter.term}&friend=${filter.friend}&page=${curentPage}`
+        })
+    }, [filter, curentPage, pageSize])
+
+    useEffect(() => {
+        const query = new URLSearchParams(location.search)
+
+        let actualPage = curentPage;
+        let actualFilter = filter;
+
+        const queryFriend = query.get("friend");
+        const queryPage = query.get("page");
+        const queryTerm = query.get("term");
+
+        if (queryPage) { actualPage = +queryPage; }
+        if (queryTerm) { actualFilter = { ...actualFilter, term: queryTerm } }
+
+        switch (queryFriend) {
+            case "null":
+                actualFilter = { ...actualFilter, friend: null };
+                break;
+            case "true":
+                actualFilter = { ...actualFilter, friend: true };
+                break;
+            case "false":
+                actualFilter = { ...actualFilter, friend: false };
+                break;
+            default:
+                break;
         }
-    }, [])
+
+        if (users.length === 0) {
+            dispatch(getUsersThunkCreator(actualPage, pageSize, actualFilter))
+        }
+
+
+    }, [location.search])
 
     return (
         <div>
