@@ -20,6 +20,7 @@ import MenuItem from 'antd/es/menu/MenuItem';
 import Avatar from 'antd/es/avatar';
 import { Col, Row } from 'antd/es/grid';
 import { AppHeader } from './components/Header/Header';
+
 //import cs from './components/Navbar/Navbar.module.css'
 
 
@@ -27,6 +28,7 @@ import { AppHeader } from './components/Header/Header';
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 //import { ProfileContainer } from './components/Profile/ProfileContainer';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const ChatPage = React.lazy(() => import('./pages/Chat/ChatPage'));
 const { Header, Content, Footer, Sider } = Layout;
 
 
@@ -122,6 +124,9 @@ const App: React.FC<PropsType> = (props) => {
                 <MenuItem>
                   <NavLink to="/users" >Users</NavLink>
                 </MenuItem>
+                <MenuItem>
+                  <NavLink to="/chat" >Chat</NavLink>
+                </MenuItem>
               </Menu>
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
@@ -133,14 +138,22 @@ const App: React.FC<PropsType> = (props) => {
                   </Suspense>} >
                   <Route path=':userId' element={<ProfileContainer />} />
                 </Route>
+
                 <Route path='/dialogs' element={
                   <Suspense fallback={<Preloader />}>
                     <DialogsContainer />
                   </Suspense>} />
+
                 <Route path='/news' element={<News />} />
                 <Route path='/settings' element={<Settings />} />
                 <Route path='/users' element={<UsersPage />} />
                 <Route path='/login' element={<Login />} />
+
+                <Route path='/chat' element={
+                  <Suspense fallback={<Preloader />}>
+                    <ChatPage />
+                  </Suspense>} />
+
                 <Route path="/" element={<Navigate to="/profile" />} />
                 <Route path='*' element={<div>404</div>} />
               </Routes>
