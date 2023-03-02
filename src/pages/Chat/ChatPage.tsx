@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { sendMessageTC, startMessagesListeningTC, stopMessagesListeningTC } from '../../redux/chatReduser';
 import { AppDispatch } from '../../redux/redux-store';
 import { useSelector } from 'react-redux';
-import { selectMessages } from '../../utils/resecelectors/chat-selectors';
+import { selectMessages, selectStatus } from '../../utils/resecelectors/chat-selectors';
 import { ChatMessageType } from '../../api/chat-api';
 
 
@@ -22,7 +22,7 @@ const ChatPage: React.FC = () => {
 
 const Chat: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
-
+    const status = useSelector(selectStatus)
 
     useEffect(() => {
         dispatch(startMessagesListeningTC())
@@ -33,8 +33,13 @@ const Chat: React.FC = () => {
 
     return (
         <div>
-            <ChatMessages />
-            <AddChatMessageForm />
+            {status === 'error'
+                ? <div>Some error. Please restart page</div>
+                : <>
+                    <ChatMessages />
+                    <AddChatMessageForm />
+                </>}
+
         </div>
     )
 }
@@ -67,8 +72,8 @@ const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
 
 const AddChatMessageForm: React.FC = () => {
     const [message, setMessage] = useState('')
-    const [isReady, setIsReady] = useState<'pending' | 'ready'>('pending')
 
+    const status = useSelector(selectStatus)
     const dispatch: AppDispatch = useDispatch()
 
     const sendMessage = () => {
@@ -82,7 +87,7 @@ const AddChatMessageForm: React.FC = () => {
                 <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}></textarea>
             </div>
             <div>
-                <button disabled={false} onClick={sendMessage}>Send</button>
+                <button disabled={status !== 'ready'} onClick={sendMessage}>Send</button>
             </div>
         </div>
     )
