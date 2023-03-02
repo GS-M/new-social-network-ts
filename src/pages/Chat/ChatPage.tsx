@@ -1,14 +1,14 @@
 import cs from './ChatPage.module.css'
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { sendMessageTC, startMessagesListeningTC, stopMessagesListeningTC } from '../../redux/chatReduser';
+import { AppDispatch } from '../../redux/redux-store';
+import { useSelector } from 'react-redux';
+import { selectMessages } from '../../utils/resecelectors/chat-selectors';
+import { ChatMessageType } from '../../api/chat-api';
 
 
-export type ChatMessageType = {
-    message: string
-    photo: string
-    userId: number,
-    userName: string
 
-}
 
 const ChatPage: React.FC = () => {
     return (
@@ -21,64 +21,28 @@ const ChatPage: React.FC = () => {
 
 
 const Chat: React.FC = () => {
-    const [wsChanal, setWsChanal] = useState<WebSocket | null>(null)
+    const dispatch: AppDispatch = useDispatch()
+
 
     useEffect(() => {
-        let ws: WebSocket
-        const closeHendler = () => {
-            setTimeout(createChanel, 3000)
-        }
-        function createChanel() {
-            if (ws) {
-                ws.removeEventListener('close', closeHendler) // Зачищаем подписку
-                ws.close()
-            }
-            ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
-            if (ws) {
-                ws.addEventListener('close', closeHendler)
-            }
-            setWsChanal(ws)
-        }
-        createChanel()
-
+        dispatch(startMessagesListeningTC())
         return () => {
-            // Когда компонента умрет
-            ws.removeEventListener('close', closeHendler)
-            ws.close()
+            dispatch(stopMessagesListeningTC())
         }
     }, [])
 
-    useEffect(() => {
-
-    }, [wsChanal])
-
     return (
         <div>
-            <ChatMessages wsChanal={wsChanal} />
-            <AddChatMessageForm wsChanal={wsChanal} />
+            <ChatMessages />
+            <AddChatMessageForm />
         </div>
     )
 }
 
 
 
-const ChatMessages: React.FC<{ wsChanal: WebSocket | null }> = ({ wsChanal }) => {
-    const [messages, setMessages] = useState<Array<ChatMessageType>>([])
-
-    let messageHendler = (e: MessageEvent) => {
-        let newMessages = JSON.parse(e.data)
-        setMessages((prevMessages) => [...prevMessages, ...newMessages])
-    }
-    useEffect(() => {
-        if (wsChanal) {
-            wsChanal.addEventListener('message', messageHendler)
-        } // Синхронизация
-        return () => {
-            if (wsChanal) {
-                wsChanal.removeEventListener('message', messageHendler)
-            } // Рассинхронизация. Зачистка перед тем как придет 2-ой useEffect
-        }
-    }, [wsChanal])
+const ChatMessages: React.FC = () => {
+    const messages = useSelector(selectMessages)
 
     return (
         <div className={cs.chat_body}>
@@ -100,28 +64,17 @@ const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
     )
 }
 
-const AddChatMessageForm: React.FC<{ wsChanal: WebSocket | null }> = ({ wsChanal }) => {
+
+const AddChatMessageForm: React.FC = () => {
     const [message, setMessage] = useState('')
     const [isReady, setIsReady] = useState<'pending' | 'ready'>('pending')
 
-    const sendMessage = () => {
-        if (wsChanal) {
-            wsChanal.send(message)
-            setMessage('')
-        }
-    }
+    const dispatch: AppDispatch = useDispatch()
 
-    useEffect(() => {
-        let openHandler = () => {
-            setIsReady('ready')
-        }
-        if (wsChanal) {
-            wsChanal.addEventListener('open', openHandler)
-            return () => {
-                wsChanal.removeEventListener('open', openHandler)
-            }
-        }
-    }, [wsChanal])
+    const sendMessage = () => {
+        dispatch(sendMessageTC(message))
+        setMessage('')
+    }
 
     return (
         <div>
@@ -129,7 +82,7 @@ const AddChatMessageForm: React.FC<{ wsChanal: WebSocket | null }> = ({ wsChanal
                 <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}></textarea>
             </div>
             <div>
-                <button disabled={isReady !== 'ready'} onClick={sendMessage}>Send</button>
+                <button disabled={false} onClick={sendMessage}>Send</button>
             </div>
         </div>
     )
