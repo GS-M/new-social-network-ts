@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { stopSubmit } from "redux-form";
+import { v1 } from "uuid";
 import { ResultCodeCapchaEnum, ResultCodeEnum } from "../api/api";
 import { chatAPI, ChatMessageType, StatusType } from "../api/chat-api";
 
@@ -8,9 +9,10 @@ import { BaseThunkType, InferActionsType } from "./redux-store";
 const SET_MESSAGES = 'chat/SET_MESSAGES';
 const SET_STATUS_CHANGES = 'chat/SET_STATUS_CHANGES';
 
+type ChatMessageWithIdType = ChatMessageType & { id: string }
 
 let initialState = {
-    messages: [] as Array<ChatMessageType>,
+    messages: [] as Array<ChatMessageWithIdType>,
     status: 'ready' as StatusType
 }
 
@@ -22,7 +24,8 @@ export const chatReducer = (state = initialState, action: ActionsTypes): Initial
         case SET_MESSAGES:
             return {
                 ...state,
-                messages: [...state.messages, ...action.data.messages]
+                messages: [...state.messages, ...action.data.messages.map(m => ({ ...m, id: v1() }))]
+                    .filter((m, index, array) => index >= array.length - 100)
             }
         case SET_STATUS_CHANGES:
             return {

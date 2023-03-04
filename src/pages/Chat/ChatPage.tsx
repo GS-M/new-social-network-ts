@@ -70,7 +70,7 @@ const ChatMessages: React.FC = () => {
 
     return (
         <div className={cs.chat_body} onScroll={scrollHandler}>
-            {messages.map((m, index) => <Message key={index} message={m} />)}
+            {messages.map((m, index) => <Message key={m.id} message={m} />)}
             <div ref={messageAnchorRef}></div>
         </div>
     )
