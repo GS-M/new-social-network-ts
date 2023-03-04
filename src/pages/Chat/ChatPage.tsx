@@ -1,5 +1,5 @@
 import cs from './ChatPage.module.css'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { sendMessageTC, startMessagesListeningTC, stopMessagesListeningTC } from '../../redux/chatReduser';
 import { AppDispatch } from '../../redux/redux-store';
@@ -24,6 +24,7 @@ const Chat: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     const status = useSelector(selectStatus)
 
+
     useEffect(() => {
         dispatch(startMessagesListeningTC())
         return () => {
@@ -33,12 +34,14 @@ const Chat: React.FC = () => {
 
     return (
         <div>
-            {status === 'error'
-                ? <div>Some error. Please restart page</div>
-                : <>
-                    <ChatMessages />
-                    <AddChatMessageForm />
-                </>}
+            {
+                status === 'error' && <div>Some error. Please restart page</div>
+            }
+
+            <>
+                <ChatMessages />
+                <AddChatMessageForm />
+            </>
 
         </div>
     )
@@ -48,17 +51,34 @@ const Chat: React.FC = () => {
 
 const ChatMessages: React.FC = () => {
     const messages = useSelector(selectMessages)
+    const messageAnchorRef = useRef<HTMLDivElement>(null)
+    const [isAutoScroll, setIsAtoScroll] = useState(true)
+    const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
+        const element = e.currentTarget
+        if (Math.abs((element.scrollHeight - element.scrollTop) - element.clientHeight) < 300) {
+            setIsAtoScroll(true)
+        } else {
+            setIsAtoScroll(false)
+        }
+    }
+
+    useEffect(() => {
+        if (messageAnchorRef.current && isAutoScroll) {
+            messageAnchorRef.current.scrollIntoView({ behavior: 'smooth' })
+        }
+    }, [messages])
 
     return (
-        <div className={cs.chat_body}>
+        <div className={cs.chat_body} onScroll={scrollHandler}>
             {messages.map((m, index) => <Message key={index} message={m} />)}
+            <div ref={messageAnchorRef}></div>
         </div>
     )
 }
 
 
 
-const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
+const Message: React.FC<{ message: ChatMessageType }> = React.memo(({ message }) => {
     return (
         <div>
             <img className={cs.small_avatar} src={message.photo} alt='avatar' />
@@ -67,7 +87,7 @@ const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
             {message.message}
         </div>
     )
-}
+})
 
 
 const AddChatMessageForm: React.FC = () => {
